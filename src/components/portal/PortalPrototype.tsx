@@ -44,7 +44,7 @@ export default function PortalPrototype(): React.JSX.Element {
   };
 
   return (
-    <main className={styles.portal}>
+    <div className={styles.portal}>
       <div id="portal-scenes" className={styles.sceneStack}>
         <section id="scene-landing" className={styles.landingScene}>
           <div className={styles.landingGrid}>
@@ -169,6 +169,6 @@ export default function PortalPrototype(): React.JSX.Element {
 
       {/* Downstream insertion seam: Subproject 3 (PortalFlock, PortalContributors, PortalNews) mounts here between Community and Footer */}
       <PortalFooter />
-    </main>
+    </div>
   );
 }
