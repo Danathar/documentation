@@ -36,7 +36,7 @@ type HeroMode = "unified" | "split";
 type RangeOption = "4w" | "12w" | "all";
 type ViewMode = "workstations" | "all-ecosystem" | "with-fedora";
 
-interface ProjectBluefinImageSpec {
+export interface ProjectBluefinImageSpec {
   id: "bluefin" | "bluefin-lts" | "dakota" | "utah";
   name: string;
   edition: string;
@@ -46,7 +46,7 @@ interface ProjectBluefinImageSpec {
   statusText: string;
 }
 
-const BLUEFIN_FAMILY_IMAGES: ProjectBluefinImageSpec[] = [
+export const BLUEFIN_FAMILY_IMAGES: ProjectBluefinImageSpec[] = [
   {
     id: "bluefin",
     name: "Bluefin",
@@ -162,7 +162,7 @@ export default function CountmeAnalyticsCharts(): React.JSX.Element {
   const workstationDomain = useMemo<[number, number]>(() => {
     let min = Infinity;
     let max = -Infinity;
-    const workstationKeys = ["bluefin", "aurora", "bluefin-lts"] as const;
+    const workstationKeys = BLUEFIN_FAMILY_IMAGES.map((img) => img.id);
     for (const w of weeks) {
       for (const k of workstationKeys) {
         const val = w[k];
@@ -172,7 +172,10 @@ export default function CountmeAnalyticsCharts(): React.JSX.Element {
         }
       }
     }
-    return [Math.max(0, min), Math.max(100, max)];
+    return [
+      min === Infinity ? 0 : Math.max(0, min),
+      max === -Infinity ? 100 : Math.max(100, max),
+    ];
   }, [weeks]);
 
   // 1. "Bluefin Systems (Total Fleet)" EChart option
@@ -387,7 +390,8 @@ export default function CountmeAnalyticsCharts(): React.JSX.Element {
               Weekly Active Systems
             </Heading>
             <p className={styles.heroSubtitle}>
-              Weekly DNF countme check-ins across Project Bluefin workstation variants (Fedora countme)
+              Weekly DNF countme check-ins across Project Bluefin workstation
+              variants (Fedora countme)
             </p>
             <div className={styles.heroSubBadges}>
               <span
